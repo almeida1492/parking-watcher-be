@@ -69,4 +69,6 @@ app.post("/reports/deactivate/:id", async (req, res) => {
 
 const PORT = process.env.PORT;
 
+console.log(process.env.NODE_ENV);
+
 app.listen(PORT, () => console.log(`🚀 Server's running at port ${PORT}`));
