@@ -4,7 +4,6 @@
     "outDir": "dist",
     "strict": true,
     "lib": ["esnext", "dom"],
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "esModuleInterop": true
   }
 }
