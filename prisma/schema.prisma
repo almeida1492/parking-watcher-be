@@ -1,0 +1,24 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Report {
+  id Int @id @default(autoincrement())
+  reporter String?
+  createdAt Int
+  lat Float
+  lng Float
+  streetName String
+  neighborhood String
+  civicNumber String
+  lotColor String
+  notes String?
+  isActive Boolean @default(true)
+} 
+
