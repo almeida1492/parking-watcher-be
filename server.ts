@@ -2,10 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import express from "express";
 import { ICoordinates } from "./types";
 import { getIsWithinRange } from "./utils";
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 const prisma = new PrismaClient();
 
