@@ -29,7 +29,7 @@ app.get("/reports/:id", async (req, res) => {
 app.post("/reports/create", async (req, res) => {
   const { body: reportData } = req;
 
-  reportData.createdAt = Date.now();
+  reportData.createdAt = new Date().toISOString();
   reportData.isActive = true;
 
   const newReport = await prisma.report.create({ data: reportData });
