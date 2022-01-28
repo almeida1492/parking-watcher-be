@@ -29,7 +29,7 @@ app.get("/reports/:id", async (req, res) => {
 app.post("/reports/create", async (req, res) => {
   const { body: reportData } = req;
 
-  reportData.createdAt = +new Date();
+  reportData.createdAt = Date.now();
   reportData.isActive = true;
 
   const newReport = await prisma.report.create({ data: reportData });
@@ -40,6 +40,10 @@ app.post("/reports/create", async (req, res) => {
 app.post("/reports/deactivate/:id", async (req, res) => {
   const { id } = req.params;
   const { body: claimantCoordinates } = req;
+
+  if (!claimantCoordinates) {
+    res.status(400).json("It wasn't possible to define your position.");
+  }
 
   const report = await prisma.report.findUnique({ where: { id: Number(id) } });
 
@@ -65,7 +69,11 @@ app.post("/reports/deactivate/:id", async (req, res) => {
     });
     res.json(updatedReport);
   } else {
-    res.status(400).json("The claimant position is out of the accepted range");
+    res
+      .status(400)
+      .json(
+        "You have to be close to the parking lot for setting it as occupied."
+      );
   }
 });
 
