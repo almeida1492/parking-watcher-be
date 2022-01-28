@@ -11,7 +11,7 @@ generator client {
 model Report {
   id Int @id @default(autoincrement())
   reporter String?
-  createdAt Int
+  createdAt DateTime
   lat Float
   lng Float
   streetName String
