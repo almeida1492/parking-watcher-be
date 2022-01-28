@@ -3,9 +3,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function removeOldReports() {
-  const reports = await prisma.report.findMany({});
+  const activeReports = await prisma.report.findMany({
+    where: { isActive: true },
+  });
 
-  const toRemoveIds = reports
+  const toDeactivateIdList = activeReports
     .map((report) => {
       const currentDate = new Date();
       const creationDate = new Date(report.createdAt);
@@ -20,20 +22,26 @@ async function removeOldReports() {
     })
     .filter((id) => id);
 
-  toRemoveIds.forEach(async (id) => {
+  toDeactivateIdList.forEach(async (id) => {
     try {
-      const deleted = await prisma.report.delete({
+      const updatedReport = await prisma.report.update({
         where: {
           id,
         },
+        data: { isActive: false },
       });
-      console.dir({ id: deleted.id }, { depth: Infinity });
+      console.dir({ id: updatedReport.id }, { depth: Infinity });
     } catch (error) {
       console.log(error);
     }
   });
 
-  console.log(`🗑 Successfully deleted ${toRemoveIds.length} reports.`);
+  console.log(
+    "⏱ ",
+    `Deactivating ${toDeactivateIdList.length} ${
+      toDeactivateIdList.length >= 2 ? "reports" : "report"
+    }.`
+  );
 }
 
 removeOldReports();
